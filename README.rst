@@ -13,7 +13,7 @@ Python-Restmapper
 .. _version: https://pypi.python.org/pypi/restmapper
 
 
-python-restmapper is a tool that makes writing RESTful API clients a breeze. It removes all of the complexity with writing API-specific code, and lets you focus all your energy on the important stuff. Restmapper will even parse JSON and XML objects and display them nicely, based on a declarative format you provide for each API you integrate with.
+python-restmapper is a tool that makes writing RESTful API clients a breeze. It removes all of the complexity with writing API-specific code, and lets you focus all your energy on the important stuff. Using Python-Requests, RestMapper will parse JSON and display them nicely, based on a declarative format you provide for each API you integrate with.
 
 
 Installation
@@ -65,12 +65,7 @@ PATCH, PUT, GET, and POST are all supported (more will come later). GET is curre
 Miscellaneous
 '''''''''''''
 
-By default, python-restmapper will return parsed JSON objects. If you'd like the raw response object for a request, just pass in `parse_response=False`.
-
-.. code:: pycon
-
-   >>> response = ...
-   ... your org ...
+By default, python-restmapper will return parsed JSON objects. If you'd like the raw response object for a request, just pass in `parse_response=False` as an argument to the API object.
 
 
 Support
