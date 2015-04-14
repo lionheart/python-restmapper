@@ -13,7 +13,7 @@ Python-Restmapper
 .. _version: https://pypi.python.org/pypi/restmapper
 
 
-python-restmapper is a tool that makes writing RESTful API clients a breeze. It removes all of the complexity with writing API-specific code, and lets you focus all your energy on the important stuff. Using Python-Requests, RestMapper will parse JSON and display them nicely, based on a declarative format you provide for each API you integrate with.
+python-restmapper is a tool that makes writing RESTful API clients a breeze. It removes all of the complexity with writing API-specific code, and lets you focus all your energy on the important stuff. Using Python-Requests, RestMapper will parse JSON and display responses nicely, based on a declarative format you provide for each API you integrate with (in progress).
 
 
 Installation

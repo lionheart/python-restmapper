@@ -75,26 +75,26 @@ class RestMapperCall(object):
             verify=self.verify_ssl
         )
 
-        parse_as = None
-        for component, parser in self.parsers.iteritems():
-            if component in self.components:
-                parse_as = parser
+        if parse_response:
+            parse_as = None
+            for component, parser in self.parsers.iteritems():
+                if component in self.components:
+                    parse_as = parser
 
-        json_response = response.json()
-
-        self.callback(json_response)
-
-        if parse_response and parse_as is not None:
-            if isinstance(json_response, list):
-                return map(parse_as.parse, json_response)
+            try:
+                json_response = response.json()
+            except ValueError:
+                return response
             else:
-                return parse_as.parse(json_response)
-        else:
-            return json_response
+                self.callback(json_response)
 
-if __name__ == "__main__":
-    from requests_oauthlib import OAuth1
-    Twitter = RestMapper("https://api.twitter.com/1.1/", url_transformer=lambda url: url + ".json", verify_ssl=True)
-    auth = OAuth1("valBh5WxRHvv8bwE0CxGptyT2", "FGsCuBYMmWopEZEUuIQGAx8T6JM8DU83aJy7LBfgifURK2I9Hs", "17824785-vP3ExF1zRx3zyGfKFTKls9nQ9Eg9boNZ1lmQnHCOm", "r3ZKknoBDfUbDsDm5EskNbg8kI3BNG7BPt7yVMiZd7SSI")
-    twitter = Twitter(auth=auth)
-    response = twitter.statuses.mentions_timeline()
+                if parse_response and parse_as is not None:
+                    if isinstance(json_response, list):
+                        return map(parse_as.parse, json_response)
+                    else:
+                        return parse_as.parse(json_response)
+                else:
+                    return json_response
+        else:
+            return response
+
