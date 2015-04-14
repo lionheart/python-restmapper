@@ -91,3 +91,10 @@ class RestMapperCall(object):
                 return parse_as.parse(json_response)
         else:
             return json_response
+
+if __name__ == "__main__":
+    from requests_oauthlib import OAuth1
+    Twitter = RestMapper("https://api.twitter.com/1.1/", url_transformer=lambda url: url + ".json", verify_ssl=True)
+    auth = OAuth1("valBh5WxRHvv8bwE0CxGptyT2", "FGsCuBYMmWopEZEUuIQGAx8T6JM8DU83aJy7LBfgifURK2I9Hs", "17824785-vP3ExF1zRx3zyGfKFTKls9nQ9Eg9boNZ1lmQnHCOm", "r3ZKknoBDfUbDsDm5EskNbg8kI3BNG7BPt7yVMiZd7SSI")
+    twitter = Twitter(auth=auth)
+    response = twitter.statuses.mentions_timeline()

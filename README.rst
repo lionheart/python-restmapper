@@ -39,14 +39,28 @@ The first thing you need to do is generate a base RestMapper object that will al
    >>> Twitter = RestMapper("https://api.twitter.com/1.1/", url_transformer=lambda url: url + ".json")
 
 
-Now, just get an access key and secret, and then start making calls with the API object.
+Now, just get an access key and secret (any `requests-compatible <http://docs.python-requests.org/en/latest/user/authentication/>`_ auth object will do):
 
 .. code:: pycon
 
    >>> auth = OAuth1('YOUR_APP_KEY', 'YOUR_APP_SECRET', 'USER_OAUTH_TOKEN', 'USER_OAUTH_TOKEN_SECRET')
    >>> twitter = Twitter(auth=auth)
+
+And start making calls. The API object is declarative, meaning that attributes and properties map 1-1 with the API you're integrating with. I.e., the below:
+
+.. code:: pycon
+
    >>> response = twitter.statuses.mentions_timeline()
 
+...will request https://api.twitter.com/1.1/statuses/mentions_timeline.json. Notice the url_transformer object used above---this adds ".json" to any request. You can pass in any function into the url_transformer object to handle more complicated situations.
+
+If you want to pass in body data for a POST, provide a single argument to the call to the API, and specify "POST" as the first attribute. I.e.
+
+.. code:: pycon
+
+   >>> twitter.POST.my.request(data)
+
+PATCH, PUT, GET, and POST are all supported (more will come later). GET is currently the default.
 
 Miscellaneous
 '''''''''''''
