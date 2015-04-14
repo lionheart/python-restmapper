@@ -4,12 +4,13 @@ import models
 
 
 class RestMapper(object):
-    def __init__(self, endpoint, parsers={}, callback=None, method=requests.get, verify_ssl=True):
+    def __init__(self, endpoint, parsers={}, callback=None, url_transformer=None, method=requests.get, verify_ssl=True):
         self.endpoint = endpoint
         self.parsers = parsers
         self.callback = callback
         self.method = method
         self.verify_ssl = verify_ssl
+        self.url_transformer = url_transformer
 
     def __call__(self, auth):
         self.auth = auth
@@ -20,11 +21,11 @@ class RestMapper(object):
             self.method = getattr(requests, k.lower())
             return self
         else:
-            return RestMapperCall(self.endpoint, self.method, k, self.auth, self.parsers, self.callback, self.verify_ssl)
+            return RestMapperCall(self.endpoint, self.method, k, self.auth, self.parsers, self.callback, self.url_transformer, self.verify_ssl)
 
 
 class RestMapperCall(object):
-    def __init__(self, endpoint, method, path, auth, parsers, callback=None, verify_ssl=True):
+    def __init__(self, endpoint, method, path, auth, parsers, callback=None, url_transformer=None, verify_ssl=True):
         self.method = method
         self.components = [path]
         self.endpoint = endpoint
@@ -36,6 +37,11 @@ class RestMapperCall(object):
             self.callback = lambda response: response
         else:
             self.callback = callback
+
+        if url_transformer is None:
+            self.url_transformer = lambda url: url
+        else:
+            self.url_transformer = url_transformer
 
         self.verify_ssl = verify_ssl
 
@@ -49,6 +55,7 @@ class RestMapperCall(object):
 
     def __call__(self, *args, **kwargs):
         url = "{}{}".format(self.endpoint, "/".join(self.components))
+        url = self.url_transformer(url)
 
         parse_response = kwargs.get('parse_response', True)
 
@@ -84,4 +91,3 @@ class RestMapperCall(object):
                 return parse_as.parse(json_response)
         else:
             return json_response
-
