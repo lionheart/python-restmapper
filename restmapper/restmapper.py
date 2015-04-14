@@ -1,0 +1,87 @@
+import json
+import requests
+import models
+
+
+class RestMapper(object):
+    def __init__(self, endpoint, parsers={}, callback=None, method=requests.get, verify_ssl=True):
+        self.endpoint = endpoint
+        self.parsers = parsers
+        self.callback = callback
+        self.method = method
+        self.verify_ssl = verify_ssl
+
+    def __call__(self, auth):
+        self.auth = auth
+        return self
+
+    def __getattr__(self, k):
+        if k in ["GET", "POST", "PUT", "PATCH"]:
+            self.method = getattr(requests, k.lower())
+            return self
+        else:
+            return RestMapperCall(self.endpoint, self.method, k, self.auth, self.parsers, self.callback, self.verify_ssl)
+
+
+class RestMapperCall(object):
+    def __init__(self, endpoint, method, path, auth, parsers, callback=None, verify_ssl=True):
+        self.method = method
+        self.components = [path]
+        self.endpoint = endpoint
+        self.auth = auth
+        self.parsers = parsers
+        self.method = method
+
+        if callback is None:
+            self.callback = lambda response: response
+        else:
+            self.callback = callback
+
+        self.verify_ssl = verify_ssl
+
+    def __getattr__(self, k):
+        self.components.append(k)
+        return self
+
+    def __getitem__(self, k):
+        self.components.append(k)
+        return self
+
+    def __call__(self, *args, **kwargs):
+        url = "{}{}".format(self.endpoint, "/".join(self.components))
+
+        parse_response = kwargs.get('parse_response', True)
+
+        if 'parse_response' in kwargs:
+            del kwargs['parse_response']
+
+        if len(args) > 0:
+            data = args[0]
+        else:
+            data = None
+
+        response = self.method(
+            url,
+            data=data,
+            params=kwargs,
+            auth=self.auth,
+            verify=self.verify_ssl
+        )
+
+        parse_as = None
+        for component, parser in self.parsers.iteritems():
+            if component in self.components:
+                parse_as = parser
+
+        json_response = response.json()
+
+        self.callback(json_response)
+
+        if parse_response and parse_as is not None:
+            if isinstance(json_response, list):
+                return map(parse_as.parse, json_response)
+            else:
+                return parse_as.parse(json_response)
+        else:
+            return json_response
+
