@@ -31,18 +31,18 @@ No dependencies (besides Python 2.7).
 Usage
 -----
 
-The first thing you need to do is generate a base RestMapper object that will allow you to instantiate a connection a remote API with authentication.
+The first thing you need to do is generate a base RestMapper object that will allow you to instantiate a connection with a remote API.
+
+.. code:: pycon
+
+   >>> Twitter = RestMapper("https://api.twitter.com/1.1/", url_transformer=lambda url: url + ".json")
+
+
+The next step is to provide authentication. For Twitter, you'll need to provide OAuth1 credentials (for other APIs, any other `requests-compatible <http://docs.python-requests.org/en/latest/user/authentication/>`_ auth object will do):
 
 .. code:: pycon
 
    >>> from requests_oauthlib import OAuth1
-   >>> Twitter = RestMapper("https://api.twitter.com/1.1/", url_transformer=lambda url: url + ".json")
-
-
-Now, just get an access key and secret (any `requests-compatible <http://docs.python-requests.org/en/latest/user/authentication/>`_ auth object will do):
-
-.. code:: pycon
-
    >>> auth = OAuth1('YOUR_APP_KEY', 'YOUR_APP_SECRET', 'USER_OAUTH_TOKEN', 'USER_OAUTH_TOKEN_SECRET')
    >>> twitter = Twitter(auth=auth)
 
