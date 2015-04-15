@@ -1,4 +1,4 @@
-import restmapper
+from restmapper import RestMapper
 
 from .metadata import (
     __author__,
@@ -16,6 +16,6 @@ __all__ = [
     '__license__',
     '__maintainer__',
     '__version__',
-    'restmapper',
+    'RestMapper',
 ]
 

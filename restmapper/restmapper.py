@@ -79,7 +79,7 @@ class RestMapperCall(object):
             parse_as = None
             for component, parser in self.parsers.iteritems():
                 if component in self.components:
-                    parse_as = parser
+                    Object = parser
 
             try:
                 json_response = response.json()
@@ -88,11 +88,11 @@ class RestMapperCall(object):
             else:
                 self.callback(json_response)
 
-                if parse_response and parse_as is not None:
+                if parse_response and Object is not None:
                     if isinstance(json_response, list):
-                        return map(parse_as.parse, json_response)
+                        return map(lambda k: Object(**Object.parse(k)), json_response)
                     else:
-                        return parse_as.parse(json_response)
+                        return Object(**Object.parse(json_response))
                 else:
                     return json_response
         else:
