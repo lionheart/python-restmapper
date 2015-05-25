@@ -1,7 +1,5 @@
 import json
 import requests
-import models
-
 
 class RestMapper(object):
     def __init__(self, endpoint, parsers={}, callback=None, url_transformer=None, method=requests.get, verify_ssl=True):
