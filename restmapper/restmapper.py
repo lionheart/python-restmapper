@@ -6,20 +6,43 @@ class RestMapper(object):
         self.endpoint = endpoint
         self.parsers = parsers
         self.callback = callback
-        self.method = method
+        self._method = None
         self.verify_ssl = verify_ssl
         self.url_transformer = url_transformer
+        self.auth = None
+        self.client = requests.session()
 
-    def __call__(self, auth):
-        self.auth = auth
+    def __call__(self, **kwargs):
+        """ Set request session with kwargs """
+        session = requests.Session()
+        session.auth = kwargs.get('auth')
+        session.headers.update(kwargs.get('headers', {}))
+        session.params = kwargs.get('params', {})
+
+        self.session = session
         return self
 
+    @property
+    def method(self):
+        if self._method is None:
+            return self.session.get
+        else:
+            return self._method
+
+    @method.setter
+    def method(self, method):
+        self._method = method
+
     def __getattr__(self, k):
-        if k in ["GET", "POST", "PUT", "PATCH"]:
-            self.method = getattr(requests, k.lower())
+        if k in ["GET", "POST", "PUT", "PATCH", "DELETE"]:
+            self.method = getattr(self.session, k.lower())
             return self
         else:
-            return RestMapperCall(self.endpoint, self.method, k, self.auth, self.parsers, self.callback, self.url_transformer, self.verify_ssl)
+            method = self.method
+            self.method = None
+            return RestMapperCall(self.endpoint, method, k,
+                    self.auth, self.parsers, self.callback,
+                    self.url_transformer, self.verify_ssl)
 
 
 class RestMapperCall(object):
@@ -56,9 +79,21 @@ class RestMapperCall(object):
         url = self.url_transformer(url)
 
         parse_response = kwargs.get('parse_response', True)
+        headers = kwargs.get('headers', {})
+
+        if 'headers' in kwargs:
+            del kwargs['headers']
 
         if 'parse_response' in kwargs:
             del kwargs['parse_response']
+
+        if 'params' in kwargs:
+            params = kwargs['params']
+            del kwargs['params']
+
+            params.update(kwargs)
+        else:
+            params = kwargs
 
         if len(args) > 0:
             data = args[0]
@@ -68,11 +103,13 @@ class RestMapperCall(object):
         response = self.method(
             url,
             data=data,
-            params=kwargs,
+            params=params,
             auth=self.auth,
-            verify=self.verify_ssl
+            verify=self.verify_ssl,
+            headers=headers
         )
 
+        Object = None
         if parse_response:
             parse_as = None
             for component, parser in self.parsers.iteritems():
