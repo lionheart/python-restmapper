@@ -36,6 +36,9 @@ class RestMapper(object):
     def method(self, method):
         self._method = method
 
+    def __getitem__(self, k):
+        return self.__getattr__(k)
+
     def __getattr__(self, k):
         if k in ["GET", "POST", "PUT", "PATCH", "DELETE"]:
             self.method = getattr(self.session, k.lower())
@@ -80,7 +83,7 @@ class RestMapperCall(object):
             url_format_parameters.update({'path': path})
             url = self.url_format.format(**url_format_parameters)
         else:
-            url = self.url_format + path
+            url = self.url_format.format(**self.url_format_parameters) + path
 
         parse_response = kwargs.get('parse_response', True)
         headers = kwargs.get('headers', {})
