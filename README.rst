@@ -10,12 +10,14 @@ RestMapper takes the pain out of integrating with RESTful APIs. It removes all o
    >>> twitter = Twitter(auth=auth)
    >>> response = twitter.statuses.mentions_timeline()
 
-Which will call `https://api.twitter.com/1.1/statuses/mentions_timeline.json`, authenticate the request using OAuth1, and return the response as JSON.
+Whoa, easy, right? This will call `https://api.twitter.com/1.1/statuses/mentions_timeline.json`, authenticate the request using OAuth1, and return the response as JSON. The great thing is that there's not much else you need to learn to integrate with any other API. You just plug in the base URL format, provide any optional authentication handlers (that requests provides), and then just start making API calls.
+
+See `requests-cloudkit <https://github.com/lionheart/requests-cloudkit>`_ for an example of an authentication handler working with Apple's CloudKit which is compatible right out of the box with RestMapper.
 
 Installation
 ------------
 
-python-restmapper is available for download through the Python Package Index (PyPi). You can install it right away using pip or easy_install.
+RestMapper is available for download through the Python Package Index (PyPi). You can install it right away using pip or easy_install.
 
 .. code:: bash
 
