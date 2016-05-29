@@ -1,4 +1,4 @@
-__version__ = "1.0.2"
+__version__ = "1.0.3"
 __author__ = "Dan Loewenherz"
 __copyright__ = "Copyright 2016, Lionheart Software"
 __maintainer__ = "Dan Loewenherz"
