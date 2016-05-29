@@ -1,7 +1,16 @@
 Python-RestMapper |ci| |downloads| |version|
 ============================================
 
-python-restmapper is a tool that makes writing RESTful API clients a breeze. It removes all of the complexity with writing API-specific code, and lets you focus all your energy on the important stuff. Using Python-Requests, RestMapper will parse JSON and display responses nicely, based on a declarative format you provide for each API you integrate with (in progress).
+RestMapper takes the pain out of integrating with RESTful APIs. It removes all of the complexity with writing API-specific code, and lets you focus all your energy on the important stuff. Here's a quick example (using Twitter):
+
+.. code:: pycon
+
+   >>> Twitter = RestMapper("https://api.twitter.com/1.1/{path}.json")
+   >>> auth = OAuth1('YOUR_APP_KEY', 'YOUR_APP_SECRET', 'USER_OAUTH_TOKEN', 'USER_OAUTH_TOKEN_SECRET')
+   >>> twitter = Twitter(auth=auth)
+   >>> response = twitter.statuses.mentions_timeline()
+
+Which will call `https://api.twitter.com/1.1/statuses/mentions_timeline.json`, authenticate the request using OAuth1, and return the response as JSON.
 
 Installation
 ------------
