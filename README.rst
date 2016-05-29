@@ -21,7 +21,9 @@ The first thing you need to do is generate a base RestMapper object that will al
 
    >>> Twitter = RestMapper("https://api.twitter.com/1.1/{path}.json")
 
-The next step is to provide authentication. For Twitter, you'll need to provide OAuth1 credentials (for other APIs, any other `requests-compatible <http://docs.python-requests.org/en/latest/user/authentication/>`_ auth object will do):
+`{path}` is just a placeholder for the rest of the path. You'll specify this later when making API calls.
+
+Twitter's API is protected by OAuth1, so the next step is to provide authentication. When integrating with any other API, any `requests-compatible <http://docs.python-requests.org/en/latest/user/authentication/>`_ auth object can be provided.
 
 .. code:: pycon
 
@@ -29,13 +31,13 @@ The next step is to provide authentication. For Twitter, you'll need to provide 
    >>> auth = OAuth1('YOUR_APP_KEY', 'YOUR_APP_SECRET', 'USER_OAUTH_TOKEN', 'USER_OAUTH_TOKEN_SECRET')
    >>> twitter = Twitter(auth=auth)
 
-And start making calls. The API object is declarative, meaning that attributes and properties map one-to-one with the API you're integrating with. E.g., the below:
+Now you can start making calls. The API object's attributes and properties map one-to-one with the API you're integrating with. E.g., the below:
 
 .. code:: pycon
 
    >>> response = twitter.statuses.mentions_timeline()
 
-...will request https://api.twitter.com/1.1/statuses/mentions_timeline.json. Notice the url_format parameter used above---the path implied by the attribute syntax is inserted right where the `path` placeholder is.
+...will request https://api.twitter.com/1.1/statuses/mentions_timeline.json. The path implied by the attribute syntax is inserted right where the `path` placeholder is in the `Twitter` object's instantiation earlier.
 
 If you want to pass in body data for a POST, provide a single argument to the call to the API, and specify "POST" as the first attribute. I.e.
 
@@ -43,7 +45,7 @@ If you want to pass in body data for a POST, provide a single argument to the ca
 
    >>> twitter.POST.my.request(data)
 
-PATCH, PUT, GET, and POST are all supported (more will come later). GET is currently the default.
+PATCH, PUT, GET, and POST are all supported. GET is currently the default.
 
 Miscellaneous
 '''''''''''''

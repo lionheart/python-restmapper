@@ -73,9 +73,14 @@ class RestMapperCall(object):
         return self
 
     def __call__(self, *args, **kwargs):
-        url_format_parameters = self.url_format_parameters
-        url_format_parameters.update({'path': "/".join(self.components)})
-        url = self.url_format.format(**url_format_parameters)
+        path = "/".join(self.components)
+
+        if "{path}" in self.url_format:
+            url_format_parameters = self.url_format_parameters
+            url_format_parameters.update({'path': path})
+            url = self.url_format.format(**url_format_parameters)
+        else:
+            url = self.url_format + path
 
         parse_response = kwargs.get('parse_response', True)
         headers = kwargs.get('headers', {})
