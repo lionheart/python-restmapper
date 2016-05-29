@@ -2,25 +2,28 @@ import json
 import requests
 
 class RestMapper(object):
-    def __init__(self, endpoint, parsers={}, callback=None, url_transformer=None, method=requests.get, verify_ssl=True):
-        self.endpoint = endpoint
+    def __init__(self, url_format, parsers={}, callback=None, method=requests.get, verify_ssl=True):
+        self.url_format = url_format
         self.parsers = parsers
         self.callback = callback
         self._method = None
         self.verify_ssl = verify_ssl
-        self.url_transformer = url_transformer
         self.auth = None
         self.client = requests.session()
 
-    def __call__(self, **kwargs):
+    def __call__(self, auth=None, headers={}, params={}, **kwargs):
         """ Set request session with kwargs """
         session = requests.Session()
-        session.auth = kwargs.get('auth')
-        session.headers.update(kwargs.get('headers', {}))
-        session.params = kwargs.get('params', {})
+        session.auth = auth
+        session.headers.update(headers)
+        session.params = params
 
+        self.url_format_parameters = kwargs
         self.session = session
         return self
+
+    def __repr__(self):
+        return "<RestMapper url={}>".format(self.url_format)
 
     @property
     def method(self):
@@ -40,29 +43,24 @@ class RestMapper(object):
         else:
             method = self.method
             self.method = None
-            return RestMapperCall(self.endpoint, method, k,
-                    self.auth, self.parsers, self.callback,
-                    self.url_transformer, self.verify_ssl)
+            return RestMapperCall(self.url_format, method, k, self.auth,
+                    self.parsers, self.callback, self.verify_ssl, **self.url_format_parameters)
 
 
 class RestMapperCall(object):
-    def __init__(self, endpoint, method, path, auth, parsers, callback=None, url_transformer=None, verify_ssl=True):
+    def __init__(self, url_format, method, path, auth, parsers, callback=None, verify_ssl=True, **kwargs):
         self.method = method
         self.components = [path]
-        self.endpoint = endpoint
+        self.url_format = url_format
         self.auth = auth
         self.parsers = parsers
         self.method = method
+        self.url_format_parameters = kwargs
 
         if callback is None:
             self.callback = lambda response: response
         else:
             self.callback = callback
-
-        if url_transformer is None:
-            self.url_transformer = lambda url: url
-        else:
-            self.url_transformer = url_transformer
 
         self.verify_ssl = verify_ssl
 
@@ -75,8 +73,9 @@ class RestMapperCall(object):
         return self
 
     def __call__(self, *args, **kwargs):
-        url = "{}{}".format(self.endpoint, "/".join(self.components))
-        url = self.url_transformer(url)
+        url_format_parameters = self.url_format_parameters
+        url_format_parameters.update({'path': "/".join(self.components)})
+        url = self.url_format.format(**url_format_parameters)
 
         parse_response = kwargs.get('parse_response', True)
         headers = kwargs.get('headers', {})
