@@ -1,20 +1,7 @@
-Python-Restmapper
-=================
-
-|ci|_   |version|_   |downloads|_
-
-.. |ci| image:: https://img.shields.io/travis/lionheart/python-restmapper.svg?style=flat
-.. _ci: https://travis-ci.org/lionheart/restmapper.py
-
-.. |downloads| image:: https://img.shields.io/pypi/dm/restmapper.svg?style=flat
-.. _downloads: https://pypi.python.org/pypi/restmapper
-
-.. |version| image:: https://img.shields.io/pypi/v/restmapper.svg?style=flat
-.. _version: https://pypi.python.org/pypi/restmapper
-
+Python-Restmapper |ci| |downloads| |version|
+============================================
 
 python-restmapper is a tool that makes writing RESTful API clients a breeze. It removes all of the complexity with writing API-specific code, and lets you focus all your energy on the important stuff. Using Python-Requests, RestMapper will parse JSON and display responses nicely, based on a declarative format you provide for each API you integrate with (in progress).
-
 
 Installation
 ------------
@@ -24,9 +11,6 @@ python-restmapper is available for download through the Python Package Index (Py
 .. code:: bash
 
    pip install restmapper
-
-No dependencies (besides Python 2.7).
-
 
 Usage
 -----
@@ -67,7 +51,6 @@ Miscellaneous
 
 By default, python-restmapper will return parsed JSON objects. If you'd like the raw response object for a request, just pass in `parse_response=False` as an argument to the API object.
 
-
 Support
 -------
 
@@ -80,4 +63,13 @@ License
    :target: LICENSE
 
 Apache License, Version 2.0. See `LICENSE <LICENSE>`_ for details.
+
+.. |ci| image:: https://img.shields.io/travis/lionheart/python-restmapper.svg?style=flat
+.. _ci: https://travis-ci.org/lionheart/restmapper.py
+
+.. |downloads| image:: https://img.shields.io/pypi/dm/restmapper.svg?style=flat
+.. _downloads: https://pypi.python.org/pypi/restmapper
+
+.. |version| image:: https://img.shields.io/pypi/v/restmapper.svg?style=flat
+.. _version: https://pypi.python.org/pypi/restmapper
 
