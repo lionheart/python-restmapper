@@ -61,7 +61,7 @@ setup(
     author_email=metadata['__email__'],
     classifiers=classifiers,
     cmdclass={'test': TestCommand},
-    description="A Python wrapper for restmapper",
+    description="RestMapper takes the pain out of integrating with RESTful APIs",
     install_requires=["requests>=2.0.0"],
     keywords="restmapper",
     license=metadata['__license__'],
