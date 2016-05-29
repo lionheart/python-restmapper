@@ -1,4 +1,4 @@
-Python-Restmapper |ci| |downloads| |version|
+Python-RestMapper |ci| |downloads| |version|
 ============================================
 
 python-restmapper is a tool that makes writing RESTful API clients a breeze. It removes all of the complexity with writing API-specific code, and lets you focus all your energy on the important stuff. Using Python-Requests, RestMapper will parse JSON and display responses nicely, based on a declarative format you provide for each API you integrate with (in progress).

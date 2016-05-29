@@ -62,7 +62,7 @@ setup(
     classifiers=classifiers,
     cmdclass={'test': TestCommand},
     description="A Python wrapper for restmapper",
-    install_required=["requests>=2.0.0"],
+    install_requires=["requests>=2.0.0"],
     keywords="restmapper",
     license=metadata['__license__'],
     long_description=long_description,
