@@ -1,4 +1,5 @@
-# python-restmapper |ci| |version|
+python-restmapper |ci| |version|
+================================
 
 RestMapper takes the pain out of integrating with RESTful APIs. It removes all of the complexity with writing API-specific code, and lets you focus all your energy on the important stuff. Here's a quick example (using Twitter):
 
