@@ -6,3 +6,4 @@ dist/
 *.un~
 .tox
 twitter.py
+test.py
