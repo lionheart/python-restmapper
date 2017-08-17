@@ -7,3 +7,4 @@ dist/
 .tox
 twitter.py
 test.py
+*.bak
