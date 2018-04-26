@@ -1,4 +1,4 @@
-# python-restmapper |ci| |version|
+# python-restmapper
 
 [![CI Status][ci-badge]][travis-repo-url]
 [![Version][version-badge]][pypi-url]
