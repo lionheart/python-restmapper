@@ -1,5 +1,5 @@
-python-restmapper \|ci\| \|version\|
-====================================
+python-restmapper
+=================
 
 |CI Status| |Version|
 
@@ -98,10 +98,10 @@ Support
 If you like this library, or need help implementing it, send us an
 email: hi@lionheartsw.com.
 
-License
--------
+.. _license-licenselicense-badgelicense-url:
 
-|License|
+License |License|
+-----------------
 
 Apache License, Version 2.0. See `LICENSE <LICENSE>`__ for details.
 
