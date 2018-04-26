@@ -66,9 +66,7 @@ By default, python-restmapper will return parsed JSON objects. If you'd like the
 
 If you like this library, or need help implementing it, send us an email: hi@lionheartsw.com.
 
-## License
-
-[![License][license-badge]][license-url]
+## License [![License][license-badge]][license-url]
 
 Apache License, Version 2.0. See [LICENSE](LICENSE) for details.
 
